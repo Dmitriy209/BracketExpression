@@ -15,7 +15,7 @@ namespace BracketExpression
 
             while (isRunning)
             {
-                Console.WriteLine("Введите строку из круглых скобок или exit:");
+                Console.WriteLine($"Введите строку из круглых скобок или {ButtonExit}:");
                 string lineInput = Console.ReadLine();
 
                 switch (lineInput)
@@ -32,42 +32,32 @@ namespace BracketExpression
 
                         bool isParentheticalCorrect = false;
 
-                        string[] lineOpenParenthesis = lineInput.Split(closeParenthesis);
-                        string[] lineCloseParenthesis = lineInput.Split(openParenthesis);
-
-                        if (lineInput[0] == closeParenthesis || lineInput[lastIndex] == openParenthesis || lineOpenParenthesis.Length != lineCloseParenthesis.Length)
+                        for (int i = 0; i < lineInput.Length; i++)
                         {
-                            isParentheticalCorrect = false;
+                            if (lineInput[i] == openParenthesis)
+                            {
+                                currentDepth++;
+                            }
+                            else if (lineInput[i] == closeParenthesis)
+                            {
+                                currentDepth--;
+
+                                if (currentDepth < 0)
+                                {
+                                    i = lineInput.Length;
+                                    isParentheticalCorrect = false;
+                                }
+                            }
+
+                            if (currentDepth > maxDepth)
+                            {
+                                maxDepth = currentDepth;
+                            }
                         }
-                        else if (lineOpenParenthesis.Length == lineCloseParenthesis.Length)
+
+                        if (currentDepth == 0)
                         {
-                            for (int i = 0; i < lineInput.Length; i++)
-                            {
-                                if (lineInput[i] == openParenthesis)
-                                {
-                                    currentDepth++;
-                                }
-                                else if (lineInput[i] == closeParenthesis)
-                                {
-                                    currentDepth--;
-
-                                    if (currentDepth < 0)
-                                    {
-                                        i = lineInput.Length;
-                                        isParentheticalCorrect = false;
-                                    }
-                                }
-
-                                if (currentDepth > maxDepth)
-                                {
-                                    maxDepth = currentDepth;
-                                }
-                            }
-
-                            if (currentDepth >= 0)
-                            {
-                                isParentheticalCorrect = true;
-                            }
+                            isParentheticalCorrect = true;
                         }
 
                         if (isParentheticalCorrect == true)
