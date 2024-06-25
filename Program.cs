@@ -28,9 +28,6 @@ namespace BracketExpression
                         int currentDepth = 0;
                         int maxDepth = 0;
 
-                        int numberOpenParenthesis = 0;
-                        int numberCloseParenthesis = 0;
-
                         int lastIndex = lineInput.Length - 1;
 
                         bool isParentheticalCorrect = false;
@@ -48,17 +45,16 @@ namespace BracketExpression
                             {
                                 if (lineInput[i] == openParenthesis)
                                 {
-                                    numberOpenParenthesis++;
-                                    currentDepth = numberOpenParenthesis - numberCloseParenthesis;
+                                    currentDepth++;
                                 }
                                 else if (lineInput[i] == closeParenthesis)
                                 {
-                                    numberCloseParenthesis++;
                                     currentDepth--;
 
-                                    if (numberCloseParenthesis > numberOpenParenthesis)
+                                    if (currentDepth < 0)
                                     {
                                         i = lineInput.Length;
+                                        isParentheticalCorrect = false;
                                     }
                                 }
 
@@ -68,11 +64,7 @@ namespace BracketExpression
                                 }
                             }
 
-                            if (currentDepth < 0)
-                            {
-                                isParentheticalCorrect = false;
-                            }
-                            else
+                            if (currentDepth >= 0)
                             {
                                 isParentheticalCorrect = true;
                             }
